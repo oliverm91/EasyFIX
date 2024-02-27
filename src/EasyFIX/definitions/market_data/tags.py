@@ -91,3 +91,4 @@ repeating_group_configurations = [
                                   ],
                                   MDTags.PartyID),
 ]
+repeating_group_starter_tags = set([mdrgc.starter_tag for mdrgc in repeating_group_configurations])

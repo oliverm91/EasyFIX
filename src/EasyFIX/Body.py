@@ -34,4 +34,7 @@ class MDEntry:
 
 class MDUpdateBody:
     def __init__(self, entries: list[MDEntry]):
-        self.entries = entries
+        if len(entries) > 0:
+            self.entries = entries
+        else:
+            raise ValueError(f'Can not create an MDUpdateBody without entries.')

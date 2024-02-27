@@ -1,5 +1,8 @@
 from enum import Enum
 
+from .tags import MDTags
+
+
 class MDUpdateAction(Enum):
     New = '0'
     Change = '1'
@@ -15,14 +18,7 @@ class MDEntryType(Enum):
     ClosingPrice = '5'
     Duration = 'r'
 
-md_update_action_dict: dict[str, MDEntryType] = {mdet.value: mdet for mdet in MDEntryType}
-
-
-class NoSides(Enum):
-    OneSide = '1'
-    BothSides = '2'
-
-no_sides_dict: dict[str, NoSides] = {ns.value: ns for ns in NoSides}
+md_entry_type_dict: dict[str, MDEntryType] = {mdet.value: mdet for mdet in MDEntryType}
 
 
 class Side(Enum):
@@ -37,4 +33,11 @@ class LastFragment(Enum):
     LastMessage = 'Y'
     NotLastMessage = 'N'
 
-side_dict: dict[str, LastFragment] = {lf.value: lf for lf in LastFragment}
+last_fragment_dict: dict[str, LastFragment] = {lf.value: lf for lf in LastFragment}
+
+value_dict_mapper: dict[MDTags, dict[str, Enum]] = {
+    MDTags.MDUpdateAction: md_update_action_dict,
+    MDTags.MDEntryType: md_entry_type_dict,
+    MDTags.Side: side_dict,
+    MDTags.LastFragment: last_fragment_dict
+}

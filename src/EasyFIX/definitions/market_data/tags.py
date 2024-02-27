@@ -66,15 +66,14 @@ accepted_md_tags: str[str] = set(md_tags_dict.keys())
 
 
 class MDRepeatingGroupConfiguration:
-    def __init__(self, starter_tag: MDTags, repeating_tags: list[MDTags], group_starter_tag: MDTags):
-        self.starter_tag = starter_tag
+    def __init__(self, repeating_tags: list[MDTags], group_starter_tag: MDTags):
         self.repeating_tags = repeating_tags
         if group_starter_tag not in self.repeating_tags:
             raise ValueError(f'Group starter tag {group_starter_tag} not in repeating rags.')
         self.group_starter_tag = group_starter_tag
 
-repeating_group_configurations = [
-    MDRepeatingGroupConfiguration(MDTags.NoSides,
+repeating_group_configurations: dict[MDTags: MDRepeatingGroupConfiguration] = {
+    MDTags.NoSides: MDRepeatingGroupConfiguration(MDTags.NoSides,
                                   [
                                     MDTags.Side, # Starter Tag
                                     MDTags.EnteringFirm,
@@ -83,12 +82,11 @@ repeating_group_configurations = [
                                     MDTags.FundManager
                                   ],
                                   MDTags.Side),
-    MDRepeatingGroupConfiguration(MDTags.NoPartyID,
+    MDTags.NoPartyID: MDRepeatingGroupConfiguration(MDTags.NoPartyID,
                                   [
                                     MDTags.PartyID, # Starter Tag
                                     MDTags.PartyIDSource,
                                     MDTags.PartyRole
                                   ],
                                   MDTags.PartyID),
-]
-repeating_group_starter_tags = set([mdrgc.starter_tag for mdrgc in repeating_group_configurations])
+}

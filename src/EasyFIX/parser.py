@@ -1,10 +1,11 @@
 from collections import defaultdict
-from EasyFIX.Messages import MDMessage
-from Header import FIXHeader
-from definitions.header import accepted_header_tags, header_tags_dict, HeaderTags, accepted_msg_types, msg_type_dict
-from definitions.market_data.tags import accepted_md_tags, MDTags, MDRepeatingGroupConfiguration, repeating_group_configurations, md_tags_dict
-from definitions.market_data.values import value_dict_mapper
-from Body import MDUpdateBody, MDEntry, RepeatingGroup
+
+from .Messages import MDMessage
+from .Header import FIXHeader
+from .definitions.header import accepted_header_tags, header_tags_dict, HeaderTags, accepted_msg_types, msg_type_dict
+from .definitions.market_data.tags import accepted_md_tags, repeating_group_configurations, md_tags_dict
+from .definitions.market_data.values import value_dict_mapper
+from .Body import MDUpdateBody, MDEntry
 
 
 __SOH__ = b'\x01'
@@ -29,7 +30,8 @@ def create_header(byte_header_fix_message: bytes) -> FIXHeader:
         tag, value = tag_value.split(tag_splitter)
         if tag not in accepted_header_tags:
             continue
-        inner_dict[header_tags_dict[tag]] = value
+        enumed_tag = header_tags_dict[tag]
+        inner_dict[enumed_tag] = value
 
     msg_type_value = inner_dict[HeaderTags.MsgType]
     if msg_type_value in accepted_msg_types:
@@ -61,24 +63,28 @@ def create_md_update_body(byte_body_fix_message: bytes) -> MDUpdateBody:
             if enumed_tag in repeating_group_configurations:
                 last_starter_tag = enumed_tag
                 repeating_group_amount = int(value)
-            elif last_starter_tag is not None:
+                continue
+            if last_starter_tag is not None:
                 if enumed_tag in repeating_group_configurations[last_starter_tag].repeating_tags:
                     if enumed_tag==repeating_group_configurations[last_starter_tag].group_starter_tag:
-                        if repeating_group_count == 0:
-                            starter_tag_repeating_groups_dict[last_starter_tag].append({})
-                        starter_tag_repeating_groups_dict[last_starter_tag][repeating_group_count][enumed_tag] = value
+                        starter_tag_repeating_groups_dict[last_starter_tag].append({})
                         repeating_group_count += 1
-                        if repeating_group_count==repeating_group_amount:
-                            repeating_group_count = 0
-                            last_starter_tag = None
-                            repeating_group_amount = None
-            else:
-                enum_dict = value_dict_mapper.get(enumed_tag, None)
-                if enum_dict is None:
-                    entry_inner_dict[md_tags_dict[enumed_tag]] = value
+                    starter_tag_repeating_groups_dict[last_starter_tag][repeating_group_count-1][enumed_tag] = value
+                    continue
+                elif repeating_group_count==repeating_group_amount:
+                        repeating_group_count = 0
+                        last_starter_tag = None
+                        repeating_group_amount = None
                 else:
-                    enumed_value = enum_dict[enumed_tag]
-                    entry_inner_dict[md_tags_dict[enumed_tag]] = enumed_value
+                    raise Exception(f'None repeating tag {enumed_tag.value} received in repeating tag {last_starter_tag}. Entry Message {entry_message}')
+                
+            
+            enum_dict = value_dict_mapper.get(enumed_tag, None)
+            if enum_dict is None:
+                entry_inner_dict[enumed_tag] = value
+            else:
+                enumed_value = enum_dict[value]
+                entry_inner_dict[enumed_tag] = enumed_value
 
         entry = MDEntry(entry_inner_dict, starter_tag_repeating_groups_dict)
         entries.append(entry)

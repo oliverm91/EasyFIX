@@ -1,12 +1,12 @@
 from typing import Any
-from definitions.header import HeaderTags
+from .definitions.header import HeaderTags
 
 
 class FIXHeader:
     __slots__ = '_inner_dict', 'message_type'
     def __init__(self, inner_dict: dict[HeaderTags, Any]):        
         self._inner_dict = inner_dict
-        self.message_type = self.get(HeaderTags.MsgType)
+        self.message_type = self.get_tag_value(HeaderTags.MsgType)
         
     def get_tag_value(self, header_tag: HeaderTags) -> Any:
         try:

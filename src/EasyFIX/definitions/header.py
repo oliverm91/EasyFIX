@@ -10,8 +10,8 @@ class HeaderTags(Enum):
     SendingTime = '52'
     TargetCompID = '56'
 
-header_tags_dict: dict[str, HeaderTags] = {header_tag.value: header_tag for header_tag in HeaderTags}
-accepted_header_tags: str[str] = set(header_tags_dict.keys())
+header_tags_dict: dict[str, HeaderTags] = {header_tag.value.encode(): header_tag for header_tag in HeaderTags}
+accepted_header_tags: set[str] = set(header_tags_dict.keys())
 
 
 class MsgType(Enum):
@@ -30,5 +30,5 @@ class MsgType(Enum):
 
     BUSINESS_MESSAGE_REQUEST = 'j'
 
-msg_type_dict: dict[str, MsgType] = {msg_type.value: msg_type for msg_type in MsgType}
+msg_type_dict: dict[str, MsgType] = {msg_type.value.encode(): msg_type for msg_type in MsgType}
 accepted_msg_types: set[str] = set(msg_type_dict.keys())

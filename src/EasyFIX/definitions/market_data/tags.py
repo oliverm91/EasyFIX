@@ -11,7 +11,6 @@ class MDTags(Enum):
     MDEntryRefID = '280'
     MDEntryPx = '270'
     BookingRefID = '466'
-    MDEntryPx = '270'
     Currency = '15'
     Symbol = '55'
     PaymentCurreny = '10225'
@@ -61,8 +60,8 @@ class MDTags(Enum):
 
 
 
-md_tags_dict: dict[str, MDTags] = {market_data_tag.value: market_data_tag for market_data_tag in MDTags}
-accepted_md_tags: str[str] = set(md_tags_dict.keys())
+md_tags_dict: dict[str, MDTags] = {market_data_tag.value.encode(): market_data_tag for market_data_tag in MDTags}
+accepted_md_tags: set[str] = set(md_tags_dict.keys())
 
 
 class MDRepeatingGroupConfiguration:
@@ -73,8 +72,7 @@ class MDRepeatingGroupConfiguration:
         self.group_starter_tag = group_starter_tag
 
 repeating_group_configurations: dict[MDTags: MDRepeatingGroupConfiguration] = {
-    MDTags.NoSides: MDRepeatingGroupConfiguration(MDTags.NoSides,
-                                  [
+    MDTags.NoSides: MDRepeatingGroupConfiguration([
                                     MDTags.Side, # Starter Tag
                                     MDTags.EnteringFirm,
                                     MDTags.ExecutingFirm,
@@ -82,8 +80,7 @@ repeating_group_configurations: dict[MDTags: MDRepeatingGroupConfiguration] = {
                                     MDTags.FundManager
                                   ],
                                   MDTags.Side),
-    MDTags.NoPartyID: MDRepeatingGroupConfiguration(MDTags.NoPartyID,
-                                  [
+    MDTags.NoPartyID: MDRepeatingGroupConfiguration([
                                     MDTags.PartyID, # Starter Tag
                                     MDTags.PartyIDSource,
                                     MDTags.PartyRole

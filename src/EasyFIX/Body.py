@@ -1,4 +1,4 @@
-from definitions.market_data.tags import MDTags
+from .definitions.market_data.tags import MDTags
 
 
 class RepeatingGroup:

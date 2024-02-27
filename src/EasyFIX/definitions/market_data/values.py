@@ -8,7 +8,7 @@ class MDUpdateAction(Enum):
     Change = '1'
     Delete = '2'
 
-md_update_action_dict: dict[str, MDUpdateAction] = {mdua.value: mdua for mdua in MDUpdateAction}
+md_update_action_dict: dict[str, MDUpdateAction] = {mdua.value.encode(): mdua for mdua in MDUpdateAction}
 
 
 class MDEntryType(Enum):
@@ -18,7 +18,7 @@ class MDEntryType(Enum):
     ClosingPrice = '5'
     Duration = 'r'
 
-md_entry_type_dict: dict[str, MDEntryType] = {mdet.value: mdet for mdet in MDEntryType}
+md_entry_type_dict: dict[str, MDEntryType] = {mdet.value.encode(): mdet for mdet in MDEntryType}
 
 
 class Side(Enum):
@@ -26,14 +26,14 @@ class Side(Enum):
     Sell = '2'
     ShortSell = '5'
 
-side_dict: dict[str, Side] = {s.value: s for s in Side}
+side_dict: dict[str, Side] = {s.value.encode(): s for s in Side}
 
 
 class LastFragment(Enum):
     LastMessage = 'Y'
     NotLastMessage = 'N'
 
-last_fragment_dict: dict[str, LastFragment] = {lf.value: lf for lf in LastFragment}
+last_fragment_dict: dict[str, LastFragment] = {lf.value.encode(): lf for lf in LastFragment}
 
 value_dict_mapper: dict[MDTags, dict[str, Enum]] = {
     MDTags.MDUpdateAction: md_update_action_dict,

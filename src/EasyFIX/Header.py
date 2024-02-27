@@ -8,7 +8,7 @@ class FIXHeader:
         self._inner_dict = inner_dict
         self.message_type = self.get(HeaderTags.MsgType)
         
-    def get(self, header_tag: HeaderTags) -> Any:
+    def get_tag_value(self, header_tag: HeaderTags) -> Any:
         try:
             return self._inner_dict[header_tag]
         except KeyError as _:

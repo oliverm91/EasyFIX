@@ -9,8 +9,6 @@ class HeaderTags(Enum):
     SenderCompID = '49'
     SendingTime = '52'
     TargetCompID = '56'
-    NoMDEntries = '268'
-    MDReqID = '262'
 
 header_tags_dict: dict[str, HeaderTags] = {header_tag.value: header_tag for header_tag in HeaderTags}
 accepted_header_tags: str[str] = set(header_tags_dict.keys())

@@ -9,14 +9,11 @@ md_update_action_dict: dict[str, MDUpdateAction] = {mdua.value: mdua for mdua in
 
 
 class MDEntryType(Enum):
+    Bid = '0'
+    Offer = '1'
     Trade = '2'
-    Indexes = '3'
     ClosingPrice = '5'
-    HighPrice = '7'
-    LowPrice = '8'
-    AveragePrice = '9'
     Duration = 'r'
-    Benchmarks = 'A'
 
 md_update_action_dict: dict[str, MDEntryType] = {mdet.value: mdet for mdet in MDEntryType}
 

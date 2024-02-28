@@ -37,6 +37,7 @@ class MDTags(Enum):
     Duration = '10170'
     TIR = '10168' # For MDEntryType=2 (TRADE)
     LocalCurrencyValue = '10169' # For MDEntryType=2 (TRADE)
+    ValuedAmount = '10175'
     
     LastFragment = '893'
 

@@ -36,6 +36,9 @@ def create_header(byte_header_fix_message: bytes) -> FIXHeader:
     msg_type_value = inner_dict[HeaderTags.MsgType]
     if msg_type_value in accepted_msg_types:
         inner_dict[HeaderTags.MsgType] = msg_type_dict[msg_type_value]
+        for k, v in inner_dict.items():
+            if k != HeaderTags.MsgType:
+                inner_dict[k] = v.decode()
         return FIXHeader(inner_dict)
     else:
         raise ValueError(f'Message Type 35={msg_type_value} not supported')
@@ -69,7 +72,7 @@ def create_md_update_body(byte_body_fix_message: bytes) -> MDUpdateBody:
                     if enumed_tag==repeating_group_configurations[last_starter_tag].group_starter_tag:
                         starter_tag_repeating_groups_dict[last_starter_tag].append({})
                         repeating_group_count += 1
-                    starter_tag_repeating_groups_dict[last_starter_tag][repeating_group_count-1][enumed_tag] = value
+                    starter_tag_repeating_groups_dict[last_starter_tag][repeating_group_count-1][enumed_tag] = value.decode()
                     continue
                 elif repeating_group_count==repeating_group_amount:
                         repeating_group_count = 0
@@ -81,7 +84,7 @@ def create_md_update_body(byte_body_fix_message: bytes) -> MDUpdateBody:
             
             enum_dict = value_dict_mapper.get(enumed_tag, None)
             if enum_dict is None:
-                entry_inner_dict[enumed_tag] = value
+                entry_inner_dict[enumed_tag] = value.decode()
             else:
                 enumed_value = enum_dict[value]
                 entry_inner_dict[enumed_tag] = enumed_value

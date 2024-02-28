@@ -18,6 +18,7 @@ class MDTags(Enum):
     MDEntryDate = '272'
     MDEntryTime = '273'
     TradeCondition = '277'
+    SecurityType = '167'
     MDEntryOriginator = '282' # For MDEntryType=2 (TRADE)
     ExpireTime = '126'
     OrderID = '37'

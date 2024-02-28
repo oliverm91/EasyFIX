@@ -19,7 +19,7 @@ def create_fix_message(byte_fix_message: bytes) -> MDMessage:
     header = create_header(header_bytes)
     body = create_md_update_body(body_bytes)
 
-    return MDMessage(header, body)
+    return MDMessage(header, body, original_message=byte_fix_message)
 
 
 def create_header(byte_header_fix_message: bytes) -> FIXHeader:
